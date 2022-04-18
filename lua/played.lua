@@ -15,10 +15,6 @@ M.played_timer = vim.loop.new_timer()
 M.afk_timer = vim.loop.new_timer()
 M.is_counting = false
 
-M.setup = function()
-  M.load()
-end
-
 M.save = function()
   Path:new(cache_config):write(vim.fn.json_encode(M.played), "w")
 end
@@ -29,7 +25,7 @@ M.load = function()
     M.played = {}
   else
     -- TODO: do log debug (not sure how to trigger the debug func)
-    -- print(vim.inspect(played))
+    print(vim.inspect(played))
     M.played = played
   end
 end
@@ -125,19 +121,5 @@ M.get_played = function(granularity, since_date)
   print("Your total played time in neovim is " .. total .. " seconds.")
   print(vim.inspect(total_bydir))
 end
-
--- Not sure if this is the correct place to put these AUTOCMDs
--- AUTOCMD
-local group = vim.api.nvim_create_augroup("played", { clear = true })
--- When theres an input
-vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-  group = group,
-  callback = M.start_counting,
-})
--- This is when AFK is detected
-vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-  group = group,
-  callback = M.stopping_soon,
-})
 
 return M
