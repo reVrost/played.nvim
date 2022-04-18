@@ -120,7 +120,7 @@ M.get_readable_time = function(seconds)
     return math.floor(bla + 0.55)
   end
 
-  return string.format("%sh %sm %ss", round(hours), round(minutes), seconds)
+  return string.format("%sh %sm %ss", math.floor(hours), round(minutes), seconds)
 end
 
 M.show_popup = function(granularity, total, total_bydir, since_date)
