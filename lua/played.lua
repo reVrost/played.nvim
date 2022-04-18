@@ -152,6 +152,8 @@ M.show_popup = function(granularity, total, total_bydir, since_date)
   end
   vim.api.nvim_win_set_option(win.border.win_id, "winhl", "Normal:PlayedBorder")
   vim.api.nvim_buf_set_lines(bufnr, 0, #contents, false, contents)
+  vim.api.nvim_buf_set_option(bufnr, "buftype", "acwrite")
+  vim.api.nvim_buf_set_option(bufnr, "bufhidden", "delete")
 end
 
 -- functions that can be called by users
