@@ -29,3 +29,10 @@ end)
 ```
 
 ![tlog](https://user-images.githubusercontent.com/1558599/163803889-0f2311c0-80a8-4133-a550-5c0b34f40795.png)
+
+## Roadmap
+
+- Time log: break down per days, per projects
+- Timesheet generation (csv or something)
+- Maybe some query text box ui
+- Regex matching breakdown (get me time log for projects starting with jimmy-\*)
