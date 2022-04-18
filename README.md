@@ -13,7 +13,6 @@ Use packer, add below
 
 ```
 {
-
     "reVrost/played.nvim"
 }
 ```
@@ -23,10 +22,10 @@ Use packer, add below
 Neovim 0.7 (for vim.keymap_set)
 
 ```
-
 vim.keymap.set({"n"}, "<leader>tt", function()
   require("played").get_played()
 end)
 
 ```
+
 ![tlog](https://user-images.githubusercontent.com/1558599/163803889-0f2311c0-80a8-4133-a550-5c0b34f40795.png)
