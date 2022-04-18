@@ -26,7 +26,7 @@ M.load = function()
     M.played = {}
   else
     -- TODO: do log debug (not sure how to trigger the debug func)
-    print(vim.inspect(played))
+    -- print(vim.inspect(played))
     M.played = played
   end
 end
