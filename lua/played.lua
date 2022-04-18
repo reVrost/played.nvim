@@ -1,4 +1,5 @@
 local Path = require("plenary.path")
+local popup = require("plenary.popup")
 local M = {}
 
 -- AFK time has to be > update interval
@@ -98,7 +99,6 @@ M.stop_counting = function()
   )
 end
 
--- functions that can be called by users
 M.get_date = function(date)
   local pattern = "(%d+)/(%d+)/(%d+)"
   local day, month, year = date:match(pattern)
@@ -106,6 +106,55 @@ M.get_date = function(date)
   return converted
 end
 
+M.get_readable_time = function(seconds)
+  -- local day = seconds / (24*3600)
+  -- seconds = seconds % (24 * 3600)
+
+  local hours = seconds / 3600
+  seconds = seconds % 3600
+
+  local minutes = seconds / 60
+  seconds = seconds % 60
+
+  local round = function(bla)
+    return math.floor(bla + 0.55)
+  end
+
+  return string.format("%sh %sm %ss", round(hours), round(minutes), seconds)
+end
+
+M.show_popup = function(granularity, total, total_bydir, since_date)
+  local width = 60
+  local height = 10
+  local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+  local bufnr = vim.api.nvim_create_buf(false, false)
+
+  local _, win = popup.create(bufnr, {
+    title = "Time log",
+    line = math.floor(((vim.o.lines - height) / 2) - 1),
+    col = math.floor((vim.o.columns - width) / 2),
+    minwidth = width,
+    minheight = height,
+    borderchars = borderchars,
+  })
+  local contents = {}
+  contents[1] = ""
+  if granularity == "since" then
+    contents[2] = "  Your total time since" .. since_date .. " is " .. M.get_readable_time(total) .. "."
+  else
+    contents[2] = "  Your total time is " .. M.get_readable_time(total) .. "."
+  end
+  contents[3] = ""
+  local id = 4
+  for k, v in pairs(total_bydir) do
+    contents[id] = string.format("  [%s]: %s", k, M.get_readable_time(v))
+    id = id + 1
+  end
+  vim.api.nvim_win_set_option(win.border.win_id, "winhl", "Normal:PlayedBorder")
+  vim.api.nvim_buf_set_lines(bufnr, 0, #contents, false, contents)
+end
+
+-- functions that can be called by users
 M.get_played = function(granularity, since_date)
   local total = 0
   local total_bydir = {}
@@ -132,8 +181,7 @@ M.get_played = function(granularity, since_date)
     end
     ::continue::
   end
-  print("Your total played time in neovim is " .. total .. " seconds.")
-  print(vim.inspect(total_bydir))
+  M.show_popup(granularity, total, total_bydir, since_date)
 end
 
 return M
