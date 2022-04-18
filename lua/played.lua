@@ -51,6 +51,9 @@ M.add_played = function()
 end
 
 M.start_counting = function()
+  if M.played == nil then
+    M.load()
+  end
   M.afk_timer:stop()
 
   if not M.is_counting then
@@ -71,8 +74,11 @@ M.start_counting = function()
 end
 
 -- Stopping logic
+M.stop_counting = function()
+  if M.played == nil then
+    M.load()
+  end
 
-M.stopping_soon = function()
   M.reserve = afk_time_seconds
   M.afk_timer:start(
     100,
