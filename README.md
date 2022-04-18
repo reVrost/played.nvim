@@ -13,6 +13,7 @@ Use packer, add below
 
 ```
 {
+
     "reVrost/played.nvim"
 }
 ```
@@ -28,3 +29,4 @@ vim.keymap.set({"n"}, "<leader>tt", function()
 end)
 
 ```
+![tlog](https://user-images.githubusercontent.com/1558599/163803889-0f2311c0-80a8-4133-a550-5c0b34f40795.png)
