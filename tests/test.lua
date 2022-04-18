@@ -1,0 +1,51 @@
+-- local played = require("played")
+
+-- for testing
+-- local group = vim.api.nvim_create_augroup("played", { clear = true })
+--
+-- vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+--   group = group,
+--   callback = played.start_counting,
+-- })
+-- -- This is when AFK is detected
+-- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+--   group = group,
+--   callback = played.stop_counting,
+-- })
+--
+-- local get_date = function(date)
+--   local pattern = "(%d+)/(%d+)/(%d+)"
+--   local day, month, year = date:match(pattern)
+--   local converted = os.time({ year = year, month = month, day = day })
+--   return converted
+-- end
+--
+-- function Get_Played(granularity, since_date)
+--   local total = 0
+--   local total_bydir = {}
+--
+--   local since = nil
+--   if since_date ~= nil then
+--     since = get_date(since_date)
+--   end
+--
+--   for date, _ in pairs(played.played) do
+--     if granularity == "today" then
+--       if date ~= os.date("%x") then
+--         goto continue
+--       end
+--     elseif granularity == "since" then
+--       -- time since date
+--       if os.difftime(get_date(date), since) < 0 then
+--         goto continue
+--       end
+--     end
+--     for dir, pl in pairs(played.played[date]) do
+--       total = total + pl.elapsed_sec
+--       total_bydir[dir] = (total_bydir[dir] ~= nil and total_bydir[dir] or 0) + pl.elapsed_sec
+--     end
+--     ::continue::
+--   end
+--   print("Your total played time in neovim is " .. total .. " seconds.")
+--   print(vim.inspect(total_bydir))
+-- end

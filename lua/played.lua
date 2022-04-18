@@ -99,14 +99,21 @@ M.stop_counting = function()
 end
 
 -- functions that can be called by users
+M.get_date = function(date)
+  local pattern = "(%d+)/(%d+)/(%d+)"
+  local day, month, year = date:match(pattern)
+  local converted = os.time({ year = year, month = month, day = day })
+  return converted
+end
 
 M.get_played = function(granularity, since_date)
   local total = 0
   local total_bydir = {}
 
-  local pattern = "(%d+)/(%d+)/(%d+)"
-  local day, month, year = since_date:match(pattern)
-  local since = os.time({ year = year, month = month, day = day })
+  local since = nil
+  if since_date ~= nil then
+    since = M.get_date(since_date)
+  end
 
   for date, _ in pairs(M.played) do
     if granularity == "today" then
@@ -114,13 +121,14 @@ M.get_played = function(granularity, since_date)
         goto continue
       end
     elseif granularity == "since" then
-      if date < since then
+      -- time since date
+      if os.difftime(M.get_date(date), since) < 0 then
         goto continue
       end
     end
     for dir, pl in pairs(M.played[date]) do
       total = total + pl.elapsed_sec
-      total_bydir[dir] = total_bydir[dir] + pl.elapsed_sec
+      total_bydir[dir] = (total_bydir[dir] ~= nil and total_bydir[dir] or 0) + pl.elapsed_sec
     end
     ::continue::
   end
